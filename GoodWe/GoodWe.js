@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const dgram = require("dgram");
 
 class GoodWePacket {
@@ -221,7 +222,7 @@ class GoodWeUdp {
 		});
 		*/
 
-		this.#client.on("message", (rcvbuf, remote) => {
+		this.#client.on("message", (rcvbuf) => {
 			if (this.#CheckRecPacket(rcvbuf, sendbuf[4], sendbuf[5])) {
 				this.#idInfo.FirmwareVersion = this.#GetStringFromByteArray(rcvbuf, 7, 5);
 				this.#idInfo.ModelName = this.#GetStringFromByteArray(rcvbuf, 12, 10);
@@ -237,7 +238,7 @@ class GoodWeUdp {
 			}
 		});
 
-		this.#client.send(sendbuf, 0, sendbuf.length, this.#port, this.#ipAddr, function (err, bytes) {
+		this.#client.send(sendbuf, 0, sendbuf.length, this.#port, this.#ipAddr, function (err) {
 			if (err) throw err;
 			//console.log("GoodWePacket send");
 		});
@@ -265,7 +266,7 @@ class GoodWeUdp {
 		});
 		*/
 
-		this.#client.on("message", (rcvbuf, remote) => {
+		this.#client.on("message", (rcvbuf) => {
 			if (this.#CheckRecRegisterData(rcvbuf, sendbuf[1], sendbuf[5])) {
 				this.#deviceInfo.ModbusProtocolVersion = this.#GetUintFromByteArray(rcvbuf, 5, 2);
 				this.#deviceInfo.RatedPower = this.#GetUintFromByteArray(rcvbuf, 7, 2);
@@ -286,7 +287,7 @@ class GoodWeUdp {
 			}
 		});
 
-		this.#client.send(sendbuf, 0, sendbuf.length, this.#port, this.#ipAddr, function (err, bytes) {
+		this.#client.send(sendbuf, 0, sendbuf.length, this.#port, this.#ipAddr, function (err) {
 			if (err) throw err;
 			//console.log("GoodWeDeviceInfo send");
 		});
@@ -314,7 +315,7 @@ class GoodWeUdp {
 		});
 		*/
 
-		this.#client.on("message", (rcvbuf, remote) => {
+		this.#client.on("message", (rcvbuf) => {
 			if (this.#CheckRecRegisterData(rcvbuf, sendbuf[1], sendbuf[5])) {
 				this.#runningData.Pv1.Voltage = this.#GetUintFromByteArray(rcvbuf, 11, 2) / 10;
 				this.#runningData.Pv1.Current = this.#GetUintFromByteArray(rcvbuf, 13, 2) / 10;
@@ -412,7 +413,7 @@ class GoodWeUdp {
 			}
 		});
 
-		this.#client.send(sendbuf, 0, sendbuf.length, this.#port, this.#ipAddr, function (err, bytes) {
+		this.#client.send(sendbuf, 0, sendbuf.length, this.#port, this.#ipAddr, function (err) {
 			if (err) throw err;
 			//console.log("GoodWeRunningData send");
 		});
@@ -440,7 +441,7 @@ class GoodWeUdp {
 		});
 		*/
 
-		this.#client.on("message", (rcvbuf, remote) => {
+		this.#client.on("message", (rcvbuf) => {
 			if (this.#CheckRecRegisterData(rcvbuf, sendbuf[1], sendbuf[5])) {
 				this.#extComData.Commode = this.#GetUintFromByteArray(rcvbuf, 5, 2);
 				this.#extComData.Rssi = this.#GetUintFromByteArray(rcvbuf, 7, 2);
@@ -466,7 +467,7 @@ class GoodWeUdp {
 			}
 		});
 
-		this.#client.send(sendbuf, 0, sendbuf.length, this.#port, this.#ipAddr, function (err, bytes) {
+		this.#client.send(sendbuf, 0, sendbuf.length, this.#port, this.#ipAddr, function (err) {
 			if (err) throw err;
 			//console.log("GoodWeExtComData send");
 		});
@@ -494,7 +495,7 @@ class GoodWeUdp {
 		});
 		*/
 
-		this.#client.on("message", (rcvbuf, remote) => {
+		this.#client.on("message", (rcvbuf) => {
 			if (this.#CheckRecRegisterData(rcvbuf, sendbuf[1], sendbuf[5])) {
 				this.#bmsInfo.Status = this.#GetUintFromByteArray(rcvbuf, 5, 2);
 				this.#bmsInfo.PackTemperature = this.#GetUintFromByteArray(rcvbuf, 7, 2) / 10;
@@ -511,7 +512,7 @@ class GoodWeUdp {
 			}
 		});
 
-		this.#client.send(sendbuf, 0, sendbuf.length, this.#port, this.#ipAddr, function (err, bytes) {
+		this.#client.send(sendbuf, 0, sendbuf.length, this.#port, this.#ipAddr, function (err) {
 			if (err) throw err;
 			//console.log("GoodWeBmsInfo send");
 		});
