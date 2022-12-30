@@ -1,0 +1,26 @@
+{
+    // Verwendet IntelliSense zum Ermitteln möglicher Attribute.
+    // Zeigen Sie auf vorhandene Attribute, um die zugehörigen Beschreibungen anzuzeigen.
+    // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+		{
+			"name": "Launch",
+			"request": "launch",
+			"type": "node",
+			"args": ["--debug", "0"],
+			"stopOnEntry": true, // - break immediately when the program launches
+			"program": "node_modules/iobroker.goodwe/main.js", // executable or file to run when launching the debugger
+			"cwd": "${workspaceFolder}/.dev-server/default", // current working directory for finding dependencies and other files
+			"skipFiles": ["<node_internals>/**"],
+			"outputCapture": "std" // https://github.com/ioBroker/dev-docs/issues/35
+		},
+		{
+			"name": "Attach to Process Local",
+			"type": "node",
+			"request": "attach",
+			"address": "localhost",
+			"port": 9229
+		}
+	]
+}
