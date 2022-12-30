@@ -43,5 +43,6 @@
 	},
 	"parserOptions": {
 		"ecmaVersion": 2020
-	}
+	},
+	"parser": "babel-eslint"
 }
