@@ -2,15 +2,25 @@
 	"i18n": true,
 	"type": "panel",
 	"items": {
-		"option1": {
-			"type": "checkbox",
-			"label": "option1",
-			"newLine": true
-		},
-		"option2": {
+		"ipAddr": {
+			"newLine": true,
 			"type": "text",
-			"label": "option2",
-			"newLine": true
+			"label": "Ip Addr.",
+			"sm": 12,
+			"md": 6,
+			"lg": 6,
+			"help": "IP Address of GoodWe Inverter"
+		},
+		"pollCycle": {
+			"newLine": true,
+			"type": "number",
+			"min": 10,
+			"max": 3600,
+			"label": "Poll cycle",
+			"sm": 12,
+			"md": 6,
+			"lg": 6,
+			"help": "Poll cycle for data refreshment in seconds"
 		}
 	}
 }

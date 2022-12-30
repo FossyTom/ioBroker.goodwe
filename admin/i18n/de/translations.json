@@ -1,5 +1,7 @@
 {
-	"goodwe adapter settings": "Adaptereinstellungen für goodwe",
-	"option1": "Option 1",
-	"option2": "Option 2"
+    "goodwe adapter settings": "Adaptereinstellungen für goodwe",
+    "Ip Addr.": "IP-Adr.",
+    "IP Address of GoodWe Inverter": "IP-Adresse des GoodWe-Wechselrichters",
+    "Poll cycle": "Umfragezyklus",
+    "Poll cycle for data refreshment in seconds": "Abfragezyklus zur Datenaktualisierung in Sekunden"
 }
