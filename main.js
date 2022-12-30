@@ -610,7 +610,7 @@ class Goodwe extends utils.Adapter {
 			switch (this.cycleCnt) {
 				case 1:
 					this.UpdateDeviceInfo();
-					this.log.info("Goodwe update");
+					//this.log.info("Goodwe update");
 					break;
 
 				case 3:
