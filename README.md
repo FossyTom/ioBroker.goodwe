@@ -21,6 +21,10 @@ Communication with GoodWe Inverter ET/EH/BH/BT Series
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+* (Thomas Schönberger) initial release
+
 ### 1.0.0 (2022-12-31)
 * (Thomas Schönberger) initial release
 
