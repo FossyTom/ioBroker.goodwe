@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "goodwe",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "news": {
+      "1.0.2": {
+        "en": "(Thomas Schönberger) Add Bluefox to npm",
+        "de": "(Thomas Schönberger) Bluefox zu npm hinzufügen",
+        "ru": "(Thomas Schönberger) Добавить Bluefox в npm",
+        "pt": "(Thomas Schönberger) Adicionar Bluefox a npm",
+        "nl": "_",
+        "fr": "(Thomas Schönberger) Ajouter Bluefox à npm",
+        "it": "(Thomas Schönberger) Aggiungi Bluefox a npm",
+        "es": "(Thomas Schönberger) Añadir Bluefox a npm",
+        "pl": "(Thomas Schönberger) Addd Bluefox tom pp",
+        "uk": "(Thomas Schönberger) Додати Bluefox до npm",
+        "zh-cn": "(Thomas Schönberger)"
+      },
       "1.0.1": {
         "en": "(Thomas Schönberger) initial release",
         "de": "(Thomas Schönberger) erste Veröffentlichung",
