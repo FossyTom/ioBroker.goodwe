@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-disable no-undef */
 const dgram = require("dgram");
 
