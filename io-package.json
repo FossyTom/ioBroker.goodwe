@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "goodwe",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "news": {
+      "1.0.1": {
+        "en": "(Thomas Schönberger) initial release",
+        "de": "(Thomas Schönberger) erste Veröffentlichung",
+        "ru": "(Thomas Schönberger) начальный релиз",
+        "pt": "(Thomas Schönberger) lançamento inicial",
+        "nl": "(Thomas Schönberger) eerste vrijlating",
+        "fr": "(Thomas Schönberger) sortie initiale",
+        "it": "(Thomas Schönberger) rilascio iniziale",
+        "es": "(Thomas Schönberger) versión inicial",
+        "pl": "(Thomas Schönberger) pierwsze wydanie",
+        "uk": "(Tomas Schönberger) початковий реліз",
+        "zh-cn": "(Thomas Schönberger) 初步释放"
+      },
       "1.0.0": {
         "en": "(Thomas Schönberger) initial release",
         "de": "(Thomas Schönberger) erste Veröffentlichung",
