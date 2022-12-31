@@ -67,6 +67,7 @@ jobs:
          npm-token: ${{ secrets.NPM_TOKEN }}
          github-token: ${{ secrets.GITHUB_TOKEN }}
 
+
 #          # When using Sentry for error reporting, Sentry can be informed about new releases
 #          # To enable create a API-Token in Sentry (User settings, API keys)
 #          # Enter this token as a GitHub secret (with name SENTRY_AUTH_TOKEN) in the repository options
