@@ -48,8 +48,8 @@ jobs:
           os: ${{ matrix.os }}
           extra-tests: npm run test:js
 
-#  deploy:
-#    needs: [check-and-lint, adapter-tests]
+ deploy:
+   needs: [check-and-lint, adapter-tests]
 
 #    if: |
 #      contains(github.event.head_commit.message, '[skip ci]') == false &&
