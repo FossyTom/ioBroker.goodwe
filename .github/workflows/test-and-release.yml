@@ -29,11 +29,8 @@ jobs:
       - uses: ioBroker/testing-action-check@v1
         with:
           node-version: '16.x'
-          # Uncomment the following line if your adapter cannot be installed using 'npm ci'
-          # install-command: 'npm install'
           lint: true
 
-  # Runs adapter tests on all supported node versions and OSes
   adapter-tests:
     if: contains(github.event.head_commit.message, '[skip ci]') == false
 
@@ -48,14 +45,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           os: ${{ matrix.os }}
-          # Uncomment the following line if your adapter cannot be installed using 'npm ci'
-          # install-command: 'npm install'
 
- # Deploys the final package to NPM
  deploy:
    needs: [check-and-lint, adapter-tests]
 
-   # Trigger this step only when a commit on any branch is tagged with a version number
    if: |
      contains(github.event.head_commit.message, '[skip ci]') == false &&
      github.event_name == 'push' &&
@@ -63,7 +56,6 @@ jobs:
 
    runs-on: ubuntu-latest
 
-   # Write permissions are required to create Github releases
    permissions:
      contents: write
 
@@ -71,8 +63,6 @@ jobs:
      - uses: ioBroker/testing-action-deploy@v1
        with:
          node-version: '16.x'
-         # Uncomment the following line if your adapter cannot be installed using 'npm ci'
-         # install-command: 'npm install'
          npm-token: ${{ secrets.NPM_TOKEN }}
          github-token: ${{ secrets.GITHUB_TOKEN }}
 
