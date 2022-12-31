@@ -29,8 +29,8 @@ jobs:
       - uses: ioBroker/testing-action-check@v1
         with:
           node-version: '16.x'
-          type-checking: true
           lint: true
+          lint-command: 'npm run lint .'
 
   adapter-tests:
     if: contains(github.event.head_commit.message, '[skip ci]') == false
@@ -46,7 +46,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           os: ${{ matrix.os }}
-          build: true
           extra-tests: npm run test:js
 
 #  deploy:
