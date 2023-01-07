@@ -134,6 +134,7 @@ class GoodWeRunningData {
 	DerateFrozenPower = 0;
 	DiagStatusH = 0;
 	DiagStatusL = 0;
+	TotalPowerPv = 0;
 }
 
 class GoodWeMeterPhase {
@@ -407,6 +408,7 @@ class GoodWeUdp {
 				this.#runningData.DerateFrozenPower = this.#GetUintFromByteArray(rcvbuf, 237, 4);
 				this.#runningData.DiagStatusH = this.#GetUintFromByteArray(rcvbuf, 241, 4);
 				this.#runningData.DiagStatusL = this.#GetUintFromByteArray(rcvbuf, 245, 4);
+				this.#runningData.TotalPowerPv = this.#runningData.Pv1.Power + this.#runningData.Pv2.Power + this.#runningData.Pv3.Power + this.#runningData.Pv4.Power;
 
 				this.#status = GoodWeUdp.ConStatus.Online;
 			} else {

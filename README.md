@@ -21,6 +21,11 @@ Communication with GoodWe Inverter ET/EH/BH/BT Series
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+
+* (Thomas Schönberger) Add PV Total object
+
 ### 1.0.2 (2022-12-31)
 
 * (Thomas Schönberger) Add Bluefox to npm

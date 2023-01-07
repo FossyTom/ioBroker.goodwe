@@ -168,6 +168,7 @@ class Goodwe extends utils.Adapter {
 		this.CreateObjectStateNumber("RunningData", "DerateFrozenPower");
 		this.CreateObjectStateNumber("RunningData", "DiagStatusH");
 		this.CreateObjectStateNumber("RunningData", "DiagStatusL");
+		this.CreateObjectStateNumber("RunningData", "TotalPowerPv");
 	}
 	
 	CreateObjectsExtComData() {
@@ -564,6 +565,7 @@ class Goodwe extends utils.Adapter {
 		this.setStateAsync("RunningData.DerateFrozenPower", this.inverter.RunningData.DerateFrozenPower, true);
 		this.setStateAsync("RunningData.DiagStatusH", this.inverter.RunningData.DiagStatusH, true);
 		this.setStateAsync("RunningData.DiagStatusL", this.inverter.RunningData.DiagStatusL, true);
+		this.setStateAsync("RunningData.TotalPowerPv", this.inverter.RunningData.TotalPowerPv, true);
 	}
 	
 	UpdateExtComData() {
