@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "goodwe",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "news": {
+      "1.0.3": {
+        "en": "(Thomas Schönberger) Add TotalPowerPv object to running Data\n(Thomas Schönberger) Comm Error",
+        "de": "(Thomas Schönberger) TotalPower hinzufügen Pv-Objekt zum Ausführen von Daten\n(Thomas Schönberger) Comm Error",
+        "ru": "(Thomas Schönberger) Добавить TotalPower Pv объект для запуска данных\n(Thomas Schönberger) Comm Ошибка",
+        "pt": "(Thomas Schönberger) Adicionar TotalPower Objeto Pv para executar dados\n(Thomas Schönberger) Erro de Comm",
+        "nl": "Add TotalPower Pv bezwaar tegen het runnen van Data\nComm Error",
+        "fr": "(Thomas Schönberger) Ajouter TotalPower Objet Pv pour l'exécution des données\n(Thomas Schönberger) Erreur de Comm",
+        "it": "(Thomas Schönberger) Aggiungi TotalPower Oggetto Pv per l'esecuzione dei dati\n(Thomas Schönberger) Errore del Comm",
+        "es": "(Thomas Schönberger) Añadir TotalPower Pv objeto para ejecutar datos\n(Thomas Schönberger) Comm Error",
+        "pl": "Thomas Schönberger (ang.). Oficjalna strona Pv\nThomas Schönberger (ang.)",
+        "uk": "(Thomas Schönberger) Додати TotalPower Pv об'єкт для запуску даних\n(Томас Шенбергер)",
+        "zh-cn": "(Thomas Schönberger) 数据操作目标\n(Thomas Schönberger) Commrror"
+      },
       "1.0.2": {
         "en": "(Thomas Schönberger) Add Bluefox to npm",
         "de": "(Thomas Schönberger) Bluefox zu npm hinzufügen",

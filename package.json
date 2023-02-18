@@ -1,6 +1,6 @@
 {
   "name": "iobroker.goodwe",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Communication with GoodWe Inverter ET/EH/BH/BT Series",
   "author": {
     "name": "Thomas Schönberger",
