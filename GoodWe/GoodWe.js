@@ -130,7 +130,7 @@ class GoodWeRunningData {
 	BatteryStrings = 0;
 	CpldWarningCode = 0;
 	WChargeCtrFlag = 0;
-	DerateFlag;
+	DerateFlag = 0;
 	DerateFrozenPower = 0;
 	DiagStatusH = 0;
 	DiagStatusL = 0;
@@ -224,26 +224,32 @@ class GoodWeUdp {
 		});
 		*/
 
-		this.#client.on("message", (rcvbuf) => {
-			if (this.#CheckRecPacket(rcvbuf, sendbuf[4], sendbuf[5])) {
-				this.#idInfo.FirmwareVersion = this.#GetStringFromByteArray(rcvbuf, 7, 5);
-				this.#idInfo.ModelName = this.#GetStringFromByteArray(rcvbuf, 12, 10);
-				this.#idInfo.Na = rcvbuf.slice(22, 37);
-				this.#idInfo.SerialNumber = this.#GetStringFromByteArray(rcvbuf, 38, 16);
-				this.#idInfo.NomVpv = this.#GetUintFromByteArray(rcvbuf, 54, 4) / 10;
-				this.#idInfo.InternalVersion = this.#GetStringFromByteArray(rcvbuf, 58, 12);
-				this.#idInfo.SafetyCountryCode = rcvbuf[70];
+		try {
+			this.#client.on("message", (rcvbuf) => {
+				if (this.#CheckRecPacket(rcvbuf, sendbuf[4], sendbuf[5])) {
+					this.#idInfo.FirmwareVersion = this.#GetStringFromByteArray(rcvbuf, 7, 5);
+					this.#idInfo.ModelName = this.#GetStringFromByteArray(rcvbuf, 12, 10);
+					this.#idInfo.Na = rcvbuf.slice(22, 37);
+					this.#idInfo.SerialNumber = this.#GetStringFromByteArray(rcvbuf, 38, 16);
+					this.#idInfo.NomVpv = this.#GetUintFromByteArray(rcvbuf, 54, 4) / 10;
+					this.#idInfo.InternalVersion = this.#GetStringFromByteArray(rcvbuf, 58, 12);
+					this.#idInfo.SafetyCountryCode = rcvbuf[70];
 
-				this.#status = GoodWeUdp.ConStatus.Online;
-			} else {
-				this.#status = GoodWeUdp.ConStatus.Offline;
-			}
-		});
+					this.#status = GoodWeUdp.ConStatus.Online;
+				} else {
+					this.#status = GoodWeUdp.ConStatus.Offline;
+				}
+			});
 
-		this.#client.send(sendbuf, 0, sendbuf.length, this.#port, this.#ipAddr, function (err) {
-			if (err) throw err;
-			//console.log("GoodWePacket send");
-		});
+			this.#client.send(sendbuf, 0, sendbuf.length, this.#port, this.#ipAddr, function (err) {
+				if (err) throw err;
+				//console.log("GoodWePacket send");
+			});
+		}
+
+		catch (error){
+			console.error(error);
+		}
 	}
 
 	ReadDeviceInfo() {
@@ -267,32 +273,36 @@ class GoodWeUdp {
 			console.log("GoodWeDeviceInfo listening");
 		});
 		*/
+		try {
+			this.#client.on("message", (rcvbuf) => {
+				if (this.#CheckRecRegisterData(rcvbuf, sendbuf[1], sendbuf[5])) {
+					this.#deviceInfo.ModbusProtocolVersion = this.#GetUintFromByteArray(rcvbuf, 5, 2);
+					this.#deviceInfo.RatedPower = this.#GetUintFromByteArray(rcvbuf, 7, 2);
+					this.#deviceInfo.AcOutputType = this.#GetUintFromByteArray(rcvbuf, 9, 2);
+					this.#deviceInfo.SerialNumber = this.#GetStringFromByteArray(rcvbuf, 11, 16);
+					this.#deviceInfo.DeviceType = this.#GetStringFromByteArray(rcvbuf, 27, 10);
+					this.#deviceInfo.DSP1_SoftwareVersion = this.#GetUintFromByteArray(rcvbuf, 37, 2);
+					this.#deviceInfo.DSP2_SoftwareVersion = this.#GetUintFromByteArray(rcvbuf, 39, 2);
+					this.#deviceInfo.DSP_SVN_Version = this.#GetUintFromByteArray(rcvbuf, 41, 2);
+					this.#deviceInfo.ARM_SoftwareVersion = this.#GetUintFromByteArray(rcvbuf, 43, 2);
+					this.#deviceInfo.ARM_SVN_Version = this.#GetUintFromByteArray(rcvbuf, 45, 2);
+					this.#deviceInfo.DSP_IntFirmwareVersion = this.#GetStringFromByteArray(rcvbuf, 47, 12);
+					this.#deviceInfo.ARM_IntFirmwareVersion = this.#GetStringFromByteArray(rcvbuf, 59, 12);
 
-		this.#client.on("message", (rcvbuf) => {
-			if (this.#CheckRecRegisterData(rcvbuf, sendbuf[1], sendbuf[5])) {
-				this.#deviceInfo.ModbusProtocolVersion = this.#GetUintFromByteArray(rcvbuf, 5, 2);
-				this.#deviceInfo.RatedPower = this.#GetUintFromByteArray(rcvbuf, 7, 2);
-				this.#deviceInfo.AcOutputType = this.#GetUintFromByteArray(rcvbuf, 9, 2);
-				this.#deviceInfo.SerialNumber = this.#GetStringFromByteArray(rcvbuf, 11, 16);
-				this.#deviceInfo.DeviceType = this.#GetStringFromByteArray(rcvbuf, 27, 10);
-				this.#deviceInfo.DSP1_SoftwareVersion = this.#GetUintFromByteArray(rcvbuf, 37, 2);
-				this.#deviceInfo.DSP2_SoftwareVersion = this.#GetUintFromByteArray(rcvbuf, 39, 2);
-				this.#deviceInfo.DSP_SVN_Version = this.#GetUintFromByteArray(rcvbuf, 41, 2);
-				this.#deviceInfo.ARM_SoftwareVersion = this.#GetUintFromByteArray(rcvbuf, 43, 2);
-				this.#deviceInfo.ARM_SVN_Version = this.#GetUintFromByteArray(rcvbuf, 45, 2);
-				this.#deviceInfo.DSP_IntFirmwareVersion = this.#GetStringFromByteArray(rcvbuf, 47, 12);
-				this.#deviceInfo.ARM_IntFirmwareVersion = this.#GetStringFromByteArray(rcvbuf, 59, 12);
+					this.#status = GoodWeUdp.ConStatus.Online;
+				} else {
+					this.#status = GoodWeUdp.ConStatus.Offline;
+				}
+			});
 
-				this.#status = GoodWeUdp.ConStatus.Online;
-			} else {
-				this.#status = GoodWeUdp.ConStatus.Offline;
-			}
-		});
-
-		this.#client.send(sendbuf, 0, sendbuf.length, this.#port, this.#ipAddr, function (err) {
-			if (err) throw err;
-			//console.log("GoodWeDeviceInfo send");
-		});
+			this.#client.send(sendbuf, 0, sendbuf.length, this.#port, this.#ipAddr, function (err) {
+				if (err) throw err;
+				//console.log("GoodWeDeviceInfo send");
+			});
+		}
+		catch (error){
+			console.error(error);
+		}
 	}
 
 	ReadRunningData() {
@@ -316,110 +326,116 @@ class GoodWeUdp {
 			console.log("GoodWeDeviceInfo listening");
 		});
 		*/
+		
+		try{
+			this.#client.on("message", (rcvbuf) => {
+				if (this.#CheckRecRegisterData(rcvbuf, sendbuf[1], sendbuf[5])) {
+					this.#runningData.Pv1.Voltage = this.#GetUintFromByteArray(rcvbuf, 11, 2) / 10;
+					this.#runningData.Pv1.Current = this.#GetUintFromByteArray(rcvbuf, 13, 2) / 10;
+					this.#runningData.Pv1.Power = this.#GetUintFromByteArray(rcvbuf, 15, 4);
+					this.#runningData.Pv2.Voltage = this.#GetUintFromByteArray(rcvbuf, 19, 2) / 10;
+					this.#runningData.Pv2.Current = this.#GetUintFromByteArray(rcvbuf, 21, 2) / 10;
+					this.#runningData.Pv2.Power = this.#GetUintFromByteArray(rcvbuf, 23, 4);
+					this.#runningData.Pv3.Voltage = this.#GetUintFromByteArray(rcvbuf, 27, 2) / 10;
+					this.#runningData.Pv3.Current = this.#GetUintFromByteArray(rcvbuf, 29, 2) / 10;
+					this.#runningData.Pv3.Power = this.#GetUintFromByteArray(rcvbuf, 31, 4);
+					this.#runningData.Pv4.Voltage = this.#GetUintFromByteArray(rcvbuf, 35, 2) / 10;
+					this.#runningData.Pv4.Current = this.#GetUintFromByteArray(rcvbuf, 37, 2) / 10;
+					this.#runningData.Pv4.Power = this.#GetUintFromByteArray(rcvbuf, 39, 4);
+					this.#runningData.Pv4.Mode = rcvbuf[43];
+					this.#runningData.Pv3.Mode = rcvbuf[44];
+					this.#runningData.Pv2.Mode = rcvbuf[45];
+					this.#runningData.Pv1.Mode = rcvbuf[46];
+					this.#runningData.GridL1.Voltage = this.#GetUintFromByteArray(rcvbuf, 47, 2) / 10;
+					this.#runningData.GridL1.Current = this.#GetUintFromByteArray(rcvbuf, 49, 2) / 10;
+					this.#runningData.GridL1.Frequency = this.#GetUintFromByteArray(rcvbuf, 51, 2) / 100;
+					this.#runningData.GridL1.Power = this.#GetIntFromByteArray(rcvbuf, 55, 2);
+					this.#runningData.GridL2.Voltage = this.#GetUintFromByteArray(rcvbuf, 57, 2) / 10;
+					this.#runningData.GridL2.Current = this.#GetUintFromByteArray(rcvbuf, 59, 2) / 10;
+					this.#runningData.GridL2.Frequency = this.#GetUintFromByteArray(rcvbuf, 61, 2) / 100;
+					this.#runningData.GridL2.Power = this.#GetIntFromByteArray(rcvbuf, 65, 2);
+					this.#runningData.GridL3.Voltage = this.#GetUintFromByteArray(rcvbuf, 67, 2) / 10;
+					this.#runningData.GridL3.Current = this.#GetUintFromByteArray(rcvbuf, 69, 2) / 10;
+					this.#runningData.GridL3.Frequency = this.#GetUintFromByteArray(rcvbuf, 71, 2) / 100;
+					this.#runningData.GridL3.Power = this.#GetIntFromByteArray(rcvbuf, 75, 2);
+					this.#runningData.GridMode = this.#GetUintFromByteArray(rcvbuf, 77, 2);
+					this.#runningData.InverterTotalPower = this.#GetIntFromByteArray(rcvbuf, 81, 2);
+					this.#runningData.AcActivePower = this.#GetIntFromByteArray(rcvbuf, 85, 2);
+					this.#runningData.AcReactivePower = this.#GetIntFromByteArray(rcvbuf, 89, 2);
+					this.#runningData.AcApparentPower = this.#GetIntFromByteArray(rcvbuf, 93, 2);
+					this.#runningData.BackUpL1.Voltage = this.#GetUintFromByteArray(rcvbuf, 95, 2) / 10;
+					this.#runningData.BackUpL1.Current = this.#GetUintFromByteArray(rcvbuf, 97, 2) / 10;
+					this.#runningData.BackUpL1.Frequency = this.#GetUintFromByteArray(rcvbuf, 99, 2) / 100;
+					this.#runningData.BackUpL1.Mode = this.#GetUintFromByteArray(rcvbuf, 101, 2);
+					this.#runningData.BackUpL1.Power = this.#GetIntFromByteArray(rcvbuf, 105, 2);
+					this.#runningData.BackUpL2.Voltage = this.#GetUintFromByteArray(rcvbuf, 107, 2) / 10;
+					this.#runningData.BackUpL2.Current = this.#GetUintFromByteArray(rcvbuf, 109, 2) / 10;
+					this.#runningData.BackUpL2.Frequency = this.#GetUintFromByteArray(rcvbuf, 111, 2) / 100;
+					this.#runningData.BackUpL2.Mode = this.#GetUintFromByteArray(rcvbuf, 113, 2);
+					this.#runningData.BackUpL2.Power = this.#GetIntFromByteArray(rcvbuf, 117, 2);
+					this.#runningData.BackUpL3.Voltage = this.#GetUintFromByteArray(rcvbuf, 119, 2) / 10;
+					this.#runningData.BackUpL3.Current = this.#GetUintFromByteArray(rcvbuf, 121, 2) / 10;
+					this.#runningData.BackUpL3.Frequency = this.#GetUintFromByteArray(rcvbuf, 123, 2) / 100;
+					this.#runningData.BackUpL3.Mode = this.#GetUintFromByteArray(rcvbuf, 125, 2);
+					this.#runningData.BackUpL3.Power = this.#GetIntFromByteArray(rcvbuf, 129, 2);
+					this.#runningData.PowerL1 = this.#GetIntFromByteArray(rcvbuf, 133, 2);
+					this.#runningData.PowerL2 = this.#GetIntFromByteArray(rcvbuf, 137, 2);
+					this.#runningData.PowerL3 = this.#GetIntFromByteArray(rcvbuf, 141, 2);
+					this.#runningData.TotalPowerBackUp = this.#GetIntFromByteArray(rcvbuf, 145, 2);
+					this.#runningData.TotalPower = this.#GetIntFromByteArray(rcvbuf, 149, 2);
+					this.#runningData.UpsLoadPercent = this.#GetUintFromByteArray(rcvbuf, 151, 2);
+					this.#runningData.AirTemperature = this.#GetIntFromByteArray(rcvbuf, 153, 2) / 10;
+					this.#runningData.ModulTemperature = this.#GetIntFromByteArray(rcvbuf, 155, 2) / 10;
+					this.#runningData.RadiatorTemperature = this.#GetIntFromByteArray(rcvbuf, 157, 2) / 10;
+					this.#runningData.FunctionBitValue = this.#GetUintFromByteArray(rcvbuf, 159, 2);
+					this.#runningData.BusVoltage = this.#GetUintFromByteArray(rcvbuf, 161, 2) / 10;
+					this.#runningData.NbusVoltage = this.#GetUintFromByteArray(rcvbuf, 163, 2) / 10;
+					this.#runningData.Battery1.Voltage = this.#GetUintFromByteArray(rcvbuf, 165, 2) / 10;
+					this.#runningData.Battery1.Current = this.#GetIntFromByteArray(rcvbuf, 167, 2) / 10;
+					this.#runningData.Battery1.Power = this.#GetIntFromByteArray(rcvbuf, 171, 2);
+					this.#runningData.Battery1.Mode = this.#GetUintFromByteArray(rcvbuf, 173, 2);
+					this.#runningData.WarningCode = this.#GetUintFromByteArray(rcvbuf, 175, 2);
+					this.#runningData.SaftyCountry = this.#GetUintFromByteArray(rcvbuf, 177, 2);
+					this.#runningData.WorkMode = this.#GetUintFromByteArray(rcvbuf, 179, 2);
+					this.#runningData.OperationMode = this.#GetUintFromByteArray(rcvbuf, 181, 2);
+					this.#runningData.ErrorMessage = this.#GetUintFromByteArray(rcvbuf, 183, 4);
+					this.#runningData.PvEnergyTotal = this.#GetUintFromByteArray(rcvbuf, 187, 4) / 10;
+					this.#runningData.PvEnergyDay = this.#GetUintFromByteArray(rcvbuf, 191, 4) / 10;
+					this.#runningData.EnergyTotal = this.#GetUintFromByteArray(rcvbuf, 195, 4) / 10;
+					this.#runningData.HoursTotal = this.#GetUintFromByteArray(rcvbuf, 199, 4);
+					this.#runningData.EnergyDaySell = this.#GetUintFromByteArray(rcvbuf, 203, 2) / 10;
+					this.#runningData.EnergyTotalBuy = this.#GetUintFromByteArray(rcvbuf, 205, 4) / 10;
+					this.#runningData.EnergyDayBuy = this.#GetUintFromByteArray(rcvbuf, 209, 2) / 10;
+					this.#runningData.EnergyTotalLoad = this.#GetUintFromByteArray(rcvbuf, 211, 4) / 10;
+					this.#runningData.EnergyDayLoad = this.#GetUintFromByteArray(rcvbuf, 215, 2) / 10;
+					this.#runningData.EnergyBatteryCharge = this.#GetUintFromByteArray(rcvbuf, 217, 4) / 10;
+					this.#runningData.EnergyDayCharge = this.#GetUintFromByteArray(rcvbuf, 221, 2) / 10;
+					this.#runningData.EnergyBatteryDischarge = this.#GetUintFromByteArray(rcvbuf, 223, 4) / 10;
+					this.#runningData.EnergyDayDischarge = this.#GetUintFromByteArray(rcvbuf, 227, 4) / 10;
+					this.#runningData.BatteryStrings = this.#GetUintFromByteArray(rcvbuf, 229, 2);
+					this.#runningData.CpldWarningCode = this.#GetUintFromByteArray(rcvbuf, 231, 2);
+					this.#runningData.WChargeCtrFlag = this.#GetUintFromByteArray(rcvbuf, 233, 2);
+					this.#runningData.DerateFlag = this.#GetUintFromByteArray(rcvbuf, 235, 2);
+					this.#runningData.DerateFrozenPower = this.#GetUintFromByteArray(rcvbuf, 237, 4);
+					this.#runningData.DiagStatusH = this.#GetUintFromByteArray(rcvbuf, 241, 4);
+					this.#runningData.DiagStatusL = this.#GetUintFromByteArray(rcvbuf, 245, 4);
+					this.#runningData.TotalPowerPv = this.#runningData.Pv1.Power + this.#runningData.Pv2.Power + this.#runningData.Pv3.Power + this.#runningData.Pv4.Power;
 
-		this.#client.on("message", (rcvbuf) => {
-			if (this.#CheckRecRegisterData(rcvbuf, sendbuf[1], sendbuf[5])) {
-				this.#runningData.Pv1.Voltage = this.#GetUintFromByteArray(rcvbuf, 11, 2) / 10;
-				this.#runningData.Pv1.Current = this.#GetUintFromByteArray(rcvbuf, 13, 2) / 10;
-				this.#runningData.Pv1.Power = this.#GetUintFromByteArray(rcvbuf, 15, 4);
-				this.#runningData.Pv2.Voltage = this.#GetUintFromByteArray(rcvbuf, 19, 2) / 10;
-				this.#runningData.Pv2.Current = this.#GetUintFromByteArray(rcvbuf, 21, 2) / 10;
-				this.#runningData.Pv2.Power = this.#GetUintFromByteArray(rcvbuf, 23, 4);
-				this.#runningData.Pv3.Voltage = this.#GetUintFromByteArray(rcvbuf, 27, 2) / 10;
-				this.#runningData.Pv3.Current = this.#GetUintFromByteArray(rcvbuf, 29, 2) / 10;
-				this.#runningData.Pv3.Power = this.#GetUintFromByteArray(rcvbuf, 31, 4);
-				this.#runningData.Pv4.Voltage = this.#GetUintFromByteArray(rcvbuf, 35, 2) / 10;
-				this.#runningData.Pv4.Current = this.#GetUintFromByteArray(rcvbuf, 37, 2) / 10;
-				this.#runningData.Pv4.Power = this.#GetUintFromByteArray(rcvbuf, 39, 4);
-				this.#runningData.Pv4.Mode = rcvbuf[43];
-				this.#runningData.Pv3.Mode = rcvbuf[44];
-				this.#runningData.Pv2.Mode = rcvbuf[45];
-				this.#runningData.Pv1.Mode = rcvbuf[46];
-				this.#runningData.GridL1.Voltage = this.#GetUintFromByteArray(rcvbuf, 47, 2) / 10;
-				this.#runningData.GridL1.Current = this.#GetUintFromByteArray(rcvbuf, 49, 2) / 10;
-				this.#runningData.GridL1.Frequency = this.#GetUintFromByteArray(rcvbuf, 51, 2) / 100;
-				this.#runningData.GridL1.Power = this.#GetIntFromByteArray(rcvbuf, 55, 2);
-				this.#runningData.GridL2.Voltage = this.#GetUintFromByteArray(rcvbuf, 57, 2) / 10;
-				this.#runningData.GridL2.Current = this.#GetUintFromByteArray(rcvbuf, 59, 2) / 10;
-				this.#runningData.GridL2.Frequency = this.#GetUintFromByteArray(rcvbuf, 61, 2) / 100;
-				this.#runningData.GridL2.Power = this.#GetIntFromByteArray(rcvbuf, 65, 2);
-				this.#runningData.GridL3.Voltage = this.#GetUintFromByteArray(rcvbuf, 67, 2) / 10;
-				this.#runningData.GridL3.Current = this.#GetUintFromByteArray(rcvbuf, 69, 2) / 10;
-				this.#runningData.GridL3.Frequency = this.#GetUintFromByteArray(rcvbuf, 71, 2) / 100;
-				this.#runningData.GridL3.Power = this.#GetIntFromByteArray(rcvbuf, 75, 2);
-				this.#runningData.GridMode = this.#GetUintFromByteArray(rcvbuf, 77, 2);
-				this.#runningData.InverterTotalPower = this.#GetIntFromByteArray(rcvbuf, 81, 2);
-				this.#runningData.AcActivePower = this.#GetIntFromByteArray(rcvbuf, 85, 2);
-				this.#runningData.AcReactivePower = this.#GetIntFromByteArray(rcvbuf, 89, 2);
-				this.#runningData.AcApparentPower = this.#GetIntFromByteArray(rcvbuf, 93, 2);
-				this.#runningData.BackUpL1.Voltage = this.#GetUintFromByteArray(rcvbuf, 95, 2) / 10;
-				this.#runningData.BackUpL1.Current = this.#GetUintFromByteArray(rcvbuf, 97, 2) / 10;
-				this.#runningData.BackUpL1.Frequency = this.#GetUintFromByteArray(rcvbuf, 99, 2) / 100;
-				this.#runningData.BackUpL1.Mode = this.#GetUintFromByteArray(rcvbuf, 101, 2);
-				this.#runningData.BackUpL1.Power = this.#GetIntFromByteArray(rcvbuf, 105, 2);
-				this.#runningData.BackUpL2.Voltage = this.#GetUintFromByteArray(rcvbuf, 107, 2) / 10;
-				this.#runningData.BackUpL2.Current = this.#GetUintFromByteArray(rcvbuf, 109, 2) / 10;
-				this.#runningData.BackUpL2.Frequency = this.#GetUintFromByteArray(rcvbuf, 111, 2) / 100;
-				this.#runningData.BackUpL2.Mode = this.#GetUintFromByteArray(rcvbuf, 113, 2);
-				this.#runningData.BackUpL2.Power = this.#GetIntFromByteArray(rcvbuf, 117, 2);
-				this.#runningData.BackUpL3.Voltage = this.#GetUintFromByteArray(rcvbuf, 119, 2) / 10;
-				this.#runningData.BackUpL3.Current = this.#GetUintFromByteArray(rcvbuf, 121, 2) / 10;
-				this.#runningData.BackUpL3.Frequency = this.#GetUintFromByteArray(rcvbuf, 123, 2) / 100;
-				this.#runningData.BackUpL3.Mode = this.#GetUintFromByteArray(rcvbuf, 125, 2);
-				this.#runningData.BackUpL3.Power = this.#GetIntFromByteArray(rcvbuf, 129, 2);
-				this.#runningData.PowerL1 = this.#GetIntFromByteArray(rcvbuf, 133, 2);
-				this.#runningData.PowerL2 = this.#GetIntFromByteArray(rcvbuf, 137, 2);
-				this.#runningData.PowerL3 = this.#GetIntFromByteArray(rcvbuf, 141, 2);
-				this.#runningData.TotalPowerBackUp = this.#GetIntFromByteArray(rcvbuf, 145, 2);
-				this.#runningData.TotalPower = this.#GetIntFromByteArray(rcvbuf, 149, 2);
-				this.#runningData.UpsLoadPercent = this.#GetUintFromByteArray(rcvbuf, 151, 2);
-				this.#runningData.AirTemperature = this.#GetIntFromByteArray(rcvbuf, 153, 2) / 10;
-				this.#runningData.ModulTemperature = this.#GetIntFromByteArray(rcvbuf, 155, 2) / 10;
-				this.#runningData.RadiatorTemperature = this.#GetIntFromByteArray(rcvbuf, 157, 2) / 10;
-				this.#runningData.FunctionBitValue = this.#GetUintFromByteArray(rcvbuf, 159, 2);
-				this.#runningData.BusVoltage = this.#GetUintFromByteArray(rcvbuf, 161, 2) / 10;
-				this.#runningData.NbusVoltage = this.#GetUintFromByteArray(rcvbuf, 163, 2) / 10;
-				this.#runningData.Battery1.Voltage = this.#GetUintFromByteArray(rcvbuf, 165, 2) / 10;
-				this.#runningData.Battery1.Current = this.#GetIntFromByteArray(rcvbuf, 167, 2) / 10;
-				this.#runningData.Battery1.Power = this.#GetIntFromByteArray(rcvbuf, 171, 2);
-				this.#runningData.Battery1.Mode = this.#GetUintFromByteArray(rcvbuf, 173, 2);
-				this.#runningData.WarningCode = this.#GetUintFromByteArray(rcvbuf, 175, 2);
-				this.#runningData.SaftyCountry = this.#GetUintFromByteArray(rcvbuf, 177, 2);
-				this.#runningData.WorkMode = this.#GetUintFromByteArray(rcvbuf, 179, 2);
-				this.#runningData.OperationMode = this.#GetUintFromByteArray(rcvbuf, 181, 2);
-				this.#runningData.ErrorMessage = this.#GetUintFromByteArray(rcvbuf, 183, 4);
-				this.#runningData.PvEnergyTotal = this.#GetUintFromByteArray(rcvbuf, 187, 4) / 10;
-				this.#runningData.PvEnergyDay = this.#GetUintFromByteArray(rcvbuf, 191, 4) / 10;
-				this.#runningData.EnergyTotal = this.#GetUintFromByteArray(rcvbuf, 195, 4) / 10;
-				this.#runningData.HoursTotal = this.#GetUintFromByteArray(rcvbuf, 199, 4);
-				this.#runningData.EnergyDaySell = this.#GetUintFromByteArray(rcvbuf, 203, 2) / 10;
-				this.#runningData.EnergyTotalBuy = this.#GetUintFromByteArray(rcvbuf, 205, 4) / 10;
-				this.#runningData.EnergyDayBuy = this.#GetUintFromByteArray(rcvbuf, 209, 2) / 10;
-				this.#runningData.EnergyTotalLoad = this.#GetUintFromByteArray(rcvbuf, 211, 4) / 10;
-				this.#runningData.EnergyDayLoad = this.#GetUintFromByteArray(rcvbuf, 215, 2) / 10;
-				this.#runningData.EnergyBatteryCharge = this.#GetUintFromByteArray(rcvbuf, 217, 4) / 10;
-				this.#runningData.EnergyDayCharge = this.#GetUintFromByteArray(rcvbuf, 221, 2) / 10;
-				this.#runningData.EnergyBatteryDischarge = this.#GetUintFromByteArray(rcvbuf, 223, 4) / 10;
-				this.#runningData.EnergyDayDischarge = this.#GetUintFromByteArray(rcvbuf, 227, 4) / 10;
-				this.#runningData.BatteryStrings = this.#GetUintFromByteArray(rcvbuf, 229, 2);
-				this.#runningData.CpldWarningCode = this.#GetUintFromByteArray(rcvbuf, 231, 2);
-				this.#runningData.WChargeCtrFlag = this.#GetUintFromByteArray(rcvbuf, 233, 2);
-				this.#runningData.DerateFlag = this.#GetUintFromByteArray(rcvbuf, 235, 2);
-				this.#runningData.DerateFrozenPower = this.#GetUintFromByteArray(rcvbuf, 237, 4);
-				this.#runningData.DiagStatusH = this.#GetUintFromByteArray(rcvbuf, 241, 4);
-				this.#runningData.DiagStatusL = this.#GetUintFromByteArray(rcvbuf, 245, 4);
-				this.#runningData.TotalPowerPv = this.#runningData.Pv1.Power + this.#runningData.Pv2.Power + this.#runningData.Pv3.Power + this.#runningData.Pv4.Power;
+					this.#status = GoodWeUdp.ConStatus.Online;
+				} else {
+					this.#status = GoodWeUdp.ConStatus.Offline;
+				}
+			});
 
-				this.#status = GoodWeUdp.ConStatus.Online;
-			} else {
-				this.#status = GoodWeUdp.ConStatus.Offline;
-			}
-		});
+			this.#client.send(sendbuf, 0, sendbuf.length, this.#port, this.#ipAddr, function (err) {
+				if (err) throw err;
+				//console.log("GoodWeRunningData send");
+			});
+		}
 
-		this.#client.send(sendbuf, 0, sendbuf.length, this.#port, this.#ipAddr, function (err) {
-			if (err) throw err;
-			//console.log("GoodWeRunningData send");
-		});
+		catch (error){
+			console.error(error);
+		}
 	}
 
 	ReadExtComData() {
@@ -444,36 +460,42 @@ class GoodWeUdp {
 		});
 		*/
 
-		this.#client.on("message", (rcvbuf) => {
-			if (this.#CheckRecRegisterData(rcvbuf, sendbuf[1], sendbuf[5])) {
-				this.#extComData.Commode = this.#GetUintFromByteArray(rcvbuf, 5, 2);
-				this.#extComData.Rssi = this.#GetUintFromByteArray(rcvbuf, 7, 2);
-				this.#extComData.ManufacturerCode = this.#GetUintFromByteArray(rcvbuf, 9, 2);
-				this.#extComData.MeterConnectStatus = this.#GetUintFromByteArray(rcvbuf, 11, 2);
-				this.#extComData.MeterCommunicateStatus = this.#GetUintFromByteArray(rcvbuf, 13, 2);
-				this.#extComData.L1.ActivePower = this.#GetIntFromByteArray(rcvbuf, 15, 2);
-				this.#extComData.L2.ActivePower = this.#GetIntFromByteArray(rcvbuf, 17, 2);
-				this.#extComData.L3.ActivePower = this.#GetIntFromByteArray(rcvbuf, 19, 2);
-				this.#extComData.TotalActivePower = this.#GetIntFromByteArray(rcvbuf, 21, 2);
-				this.#extComData.TotalReactivePower = this.#GetUintFromByteArray(rcvbuf, 23, 2);
-				this.#extComData.L1.PowerFactor = this.#GetUintFromByteArray(rcvbuf, 25, 2) / 100;
-				this.#extComData.L2.PowerFactor = this.#GetUintFromByteArray(rcvbuf, 27, 2) / 100;
-				this.#extComData.L3.PowerFactor = this.#GetUintFromByteArray(rcvbuf, 29, 2) / 100;
-				this.#extComData.PowerFactor = this.#GetUintFromByteArray(rcvbuf, 31, 2) / 100;
-				this.#extComData.Frequency = this.#GetUintFromByteArray(rcvbuf, 33, 2) / 100;
-				this.#extComData.EnergyTotalSell = this.#GetFloatFromByteArray(rcvbuf, 35, 4) / 10;
-				this.#extComData.EnergyTotalBuy = this.#GetFloatFromByteArray(rcvbuf, 39, 4) / 10;
+		try {
+			this.#client.on("message", (rcvbuf) => {
+				if (this.#CheckRecRegisterData(rcvbuf, sendbuf[1], sendbuf[5])) {
+					this.#extComData.Commode = this.#GetUintFromByteArray(rcvbuf, 5, 2);
+					this.#extComData.Rssi = this.#GetUintFromByteArray(rcvbuf, 7, 2);
+					this.#extComData.ManufacturerCode = this.#GetUintFromByteArray(rcvbuf, 9, 2);
+					this.#extComData.MeterConnectStatus = this.#GetUintFromByteArray(rcvbuf, 11, 2);
+					this.#extComData.MeterCommunicateStatus = this.#GetUintFromByteArray(rcvbuf, 13, 2);
+					this.#extComData.L1.ActivePower = this.#GetIntFromByteArray(rcvbuf, 15, 2);
+					this.#extComData.L2.ActivePower = this.#GetIntFromByteArray(rcvbuf, 17, 2);
+					this.#extComData.L3.ActivePower = this.#GetIntFromByteArray(rcvbuf, 19, 2);
+					this.#extComData.TotalActivePower = this.#GetIntFromByteArray(rcvbuf, 21, 2);
+					this.#extComData.TotalReactivePower = this.#GetUintFromByteArray(rcvbuf, 23, 2);
+					this.#extComData.L1.PowerFactor = this.#GetUintFromByteArray(rcvbuf, 25, 2) / 100;
+					this.#extComData.L2.PowerFactor = this.#GetUintFromByteArray(rcvbuf, 27, 2) / 100;
+					this.#extComData.L3.PowerFactor = this.#GetUintFromByteArray(rcvbuf, 29, 2) / 100;
+					this.#extComData.PowerFactor = this.#GetUintFromByteArray(rcvbuf, 31, 2) / 100;
+					this.#extComData.Frequency = this.#GetUintFromByteArray(rcvbuf, 33, 2) / 100;
+					this.#extComData.EnergyTotalSell = this.#GetFloatFromByteArray(rcvbuf, 35, 4) / 10;
+					this.#extComData.EnergyTotalBuy = this.#GetFloatFromByteArray(rcvbuf, 39, 4) / 10;
 
-				this.#status = GoodWeUdp.ConStatus.Online;
-			} else {
-				this.#status = GoodWeUdp.ConStatus.Offline;
-			}
-		});
+					this.#status = GoodWeUdp.ConStatus.Online;
+				} else {
+					this.#status = GoodWeUdp.ConStatus.Offline;
+				}
+			});
 
-		this.#client.send(sendbuf, 0, sendbuf.length, this.#port, this.#ipAddr, function (err) {
-			if (err) throw err;
-			//console.log("GoodWeExtComData send");
-		});
+			this.#client.send(sendbuf, 0, sendbuf.length, this.#port, this.#ipAddr, function (err) {
+				if (err) throw err;
+				//console.log("GoodWeExtComData send");
+			});
+		}
+
+		catch (error){
+			console.error(error);
+		}
 	}
 
 	ReadBmsInfo() {
@@ -498,27 +520,33 @@ class GoodWeUdp {
 		});
 		*/
 
-		this.#client.on("message", (rcvbuf) => {
-			if (this.#CheckRecRegisterData(rcvbuf, sendbuf[1], sendbuf[5])) {
-				this.#bmsInfo.Status = this.#GetUintFromByteArray(rcvbuf, 5, 2);
-				this.#bmsInfo.PackTemperature = this.#GetUintFromByteArray(rcvbuf, 7, 2) / 10;
-				this.#bmsInfo.CurrentMaxCharge = this.#GetUintFromByteArray(rcvbuf, 9, 2);
-				this.#bmsInfo.CurrentMaxDischarge = this.#GetUintFromByteArray(rcvbuf, 11, 2);
-				this.#bmsInfo.ErrorCode = this.#GetUintFromByteArray(rcvbuf, 13, 2);
-				this.#bmsInfo.SOC = this.#GetUintFromByteArray(rcvbuf, 15, 2);
-				this.#bmsInfo.SOH = this.#GetUintFromByteArray(rcvbuf, 17, 2);
-				this.#bmsInfo.BatteryStrings = this.#GetUintFromByteArray(rcvbuf, 19, 2);
+		try {
+			this.#client.on("message", (rcvbuf) => {
+				if (this.#CheckRecRegisterData(rcvbuf, sendbuf[1], sendbuf[5])) {
+					this.#bmsInfo.Status = this.#GetUintFromByteArray(rcvbuf, 5, 2);
+					this.#bmsInfo.PackTemperature = this.#GetUintFromByteArray(rcvbuf, 7, 2) / 10;
+					this.#bmsInfo.CurrentMaxCharge = this.#GetUintFromByteArray(rcvbuf, 9, 2);
+					this.#bmsInfo.CurrentMaxDischarge = this.#GetUintFromByteArray(rcvbuf, 11, 2);
+					this.#bmsInfo.ErrorCode = this.#GetUintFromByteArray(rcvbuf, 13, 2);
+					this.#bmsInfo.SOC = this.#GetUintFromByteArray(rcvbuf, 15, 2);
+					this.#bmsInfo.SOH = this.#GetUintFromByteArray(rcvbuf, 17, 2);
+					this.#bmsInfo.BatteryStrings = this.#GetUintFromByteArray(rcvbuf, 19, 2);
 
-				this.#status = GoodWeUdp.ConStatus.Online;
-			} else {
-				this.#status = GoodWeUdp.ConStatus.Offline;
-			}
-		});
+					this.#status = GoodWeUdp.ConStatus.Online;
+				} else {
+					this.#status = GoodWeUdp.ConStatus.Offline;
+				}
+			});
 
-		this.#client.send(sendbuf, 0, sendbuf.length, this.#port, this.#ipAddr, function (err) {
-			if (err) throw err;
-			//console.log("GoodWeBmsInfo send");
-		});
+			this.#client.send(sendbuf, 0, sendbuf.length, this.#port, this.#ipAddr, function (err) {
+				if (err) throw err;
+				//console.log("GoodWeBmsInfo send");
+			});
+		}
+
+		catch (error){
+			console.error(error);
+		}
 	}
 
 	#CheckRecPacket(Data, CtrCode, FctCode) {

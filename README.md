@@ -24,7 +24,7 @@ Communication with GoodWe Inverter ET/EH/BH/BT Series
 
 ### **WORK IN PROGRESS**
 
-* (Thomas Schönberger) Add PV Total object
+* (Thomas Schönberger) Add TotalPowerPv object to running Data
 
 ### 1.0.2 (2022-12-31)
 

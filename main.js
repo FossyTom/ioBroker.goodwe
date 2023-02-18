@@ -164,7 +164,7 @@ class Goodwe extends utils.Adapter {
 		this.CreateObjectStateNumber("RunningData", "BatteryStrings");
 		this.CreateObjectStateNumber("RunningData", "CpldWarningCode");
 		this.CreateObjectStateNumber("RunningData", "WChargeCtrFlag");
-		this.CreateObjectStateNumber("RunningData", "DerateFlag");
+		//this.CreateObjectStateNumber("RunningData", "DerateFlag");
 		this.CreateObjectStateNumber("RunningData", "DerateFrozenPower");
 		this.CreateObjectStateNumber("RunningData", "DiagStatusH");
 		this.CreateObjectStateNumber("RunningData", "DiagStatusL");
@@ -561,7 +561,7 @@ class Goodwe extends utils.Adapter {
 		this.setStateAsync("RunningData.BatteryStrings", this.inverter.RunningData.BatteryStrings, true);
 		this.setStateAsync("RunningData.CpldWarningCode", this.inverter.RunningData.CpldWarningCode, true);
 		this.setStateAsync("RunningData.WChargeCtrFlag", this.inverter.RunningData.WChargeCtrFlag, true);
-		this.setStateAsync("RunningData.DerateFlag", this.inverter.RunningData.DerateFlag, true);
+		//this.setStateAsync("RunningData.DerateFlag", this.inverter.RunningData.DerateFlag, true);
 		this.setStateAsync("RunningData.DerateFrozenPower", this.inverter.RunningData.DerateFrozenPower, true);
 		this.setStateAsync("RunningData.DiagStatusH", this.inverter.RunningData.DiagStatusH, true);
 		this.setStateAsync("RunningData.DiagStatusL", this.inverter.RunningData.DiagStatusL, true);
