@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "goodwe",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "news": {
+      "1.0.4": {
+        "en": "(Thomas Schönberger) Add some Logs for ENETUNREACH error",
+        "de": "(Thomas Schönberger) Fügen Sie einige Logs für ENETUNREACH-Fehler hinzu",
+        "ru": "(Томас Schönberger) Добавьте несколько логов для ошибки ENETUNREACH",
+        "pt": "(Thomas Schönberger) Adicione alguns registros para o erro ENETUNREACH",
+        "nl": "(Thomas Schönberger) Voeg wat Logs toe voor onbelangrijke fouten",
+        "fr": "(Thomas Schönberger) Ajouter quelques Logs pour erreur ENETUNREACH",
+        "it": "(Thomas Schönberger) Aggiungi alcuni Log per ENETUNREACH errore",
+        "es": "(Thomas Schönberger) Añadir algunos registros para el error ENETUNREACH",
+        "pl": "Thomas Schönberger (ang.). Addd some Logs for ENETUNREACH (ang.)",
+        "uk": "(Томас Шенбергер) Додати деякі журнали для ENETUNREACH помилки",
+        "zh-cn": "(Thomas Schönberger) 增加一些E网UNREACH错误的后勤"
+      },
       "1.0.3": {
         "en": "(Thomas Schönberger) Add TotalPowerPv object to running Data\n(Thomas Schönberger) Comm Error",
         "de": "(Thomas Schönberger) TotalPower hinzufügen Pv-Objekt zum Ausführen von Daten\n(Thomas Schönberger) Comm Error",
