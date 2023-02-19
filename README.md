@@ -21,6 +21,10 @@ Communication with GoodWe Inverter ET/EH/BH/BT Series
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+* (Thomas Schönberger) Add some Logs for ENETUNREACH error
+
 ### 1.0.3 (2023-02-18)
 
 * (Thomas Schönberger) Add TotalPowerPv object to running Data
